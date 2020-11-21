@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img src="loading.gif" data-src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_1280.jpg" alt="">
+    <img src="loading.gif" data-src="https://cdn.pixabay.com/photo/2014/08/01/00/08/pier-407252_1280.jpg" alt="">
+    <img src="loading.gif" data-src="https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_1280.jpg" alt="">
+    <img src="loading.gif" data-src="https://cdn.pixabay.com/photo/2010/12/13/10/09/abstract-2384_1280.jpg" alt="">
+    <img src="loading.gif" data-src="https://cdn.pixabay.com/photo/2015/10/24/11/09/drop-of-water-1004250_1280.jpg">
+    <script>
+        let img = document.getElementsByTagName("img");
+
+        if (IntersectionObserver) {
+            let lazyImageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    let lazyImage = entry.target;
+                    // intersectionRatio 表示相交区域和目标元素的比例值 
+                    if (entry.intersectionRatio > 0 && entry.intersectionRatio <= 1) {
+                        if (lazyImage.getAttribute("src") == "loading.gif") {
+                            // 图片进入进入可见区域， 则赋予data-src值给src属性
+                            lazyImage.src = lazyImage.getAttribute("data-src");
+                        }
+                        // 图片已加载， 解除观察
+                        lazyImageObserver.unobserve(lazyImage)
+                    }
+                })
+            })
+            for (let i = 0; i < img.length; i++) {
+
+                lazyImageObserver.observe(img[i]);
+                console.log(img[i])
+            }
+        }
+    </script>
+</body>
+
+</html>
