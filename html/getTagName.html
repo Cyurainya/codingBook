@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>ppppppppppp</p>
+    <div>divdidvdivdivdivdivdivdivdivdivdivdivdivdiv</div>
+    <script>
+        function getName(evt) {
+            evt = evt || window.event;
+            let selected = evt.target || evt.srcElement;
+            let eleName = selected && selected.tarName ? selected.tagName.toLowerCase() : alert(el)
+        }
+        window.onclick = function () {
+            let el = document.getElementsByTagName('body')
+            el[0] = getName;
+        }
+    </script>
+</body>
+
+</html>
