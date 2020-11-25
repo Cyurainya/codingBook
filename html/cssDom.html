@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>css阻塞</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        console.log('before css')
+        var startDate = new Date()
+    </script>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>这是红色的</h1>
+    <script>
+        var endDate = new Date()
+        console.log('after css')
+        console.log('经过了' + (endDate - startDate) + 'ms')
+    </script>
+</body>
+
+</html>
