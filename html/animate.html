@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        @keyframes colorchange {
+            0% {
+                background: yellow;
+            }
+
+            100% {
+                background: blue;
+            }
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+        }
+
+        .changing {
+            animation: colorchange 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box changing"></div>
+
+    <div class="runButton">Click me to run the animation</div>
+    <script>
+        function play() {
+            document.querySelector(".box").className = "box";
+            window.requestAnimationFrame(function (time) {
+                console.log(1);
+                document.querySelector(".box").className = "box changing";
+                // window.requestAnimationFrame(function (time) {
+                //   document.querySelector(".box").className = "box changing";
+                // });
+            });
+        }
+        document
+            .querySelector(".runButton")
+            .addEventListener("click", play, false);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h1>Drag and Drop HTML5</h1>
+    <div class="drag-list">
+        <div class="drag-item" draggable="true">A</div>
+        <div class="drag-item" draggable="true">B</div>
+        <div class="drag-item" draggable="true">C</div>
+        <div class="drag-item" draggable="true">D</div>
+        <div class="drag-item" draggable="true">E</div>
+        <div class="drag-item" draggable="true">F</div>
+        <div class="drag-item" draggable="true">G</div>
+        <div class="drag-item" draggable="true">H</div>
+        <div class="drag-item" draggable="true">I</div>
+        <div class="drag-item" draggable="true">J</div>
+        <div class="drag-item" draggable="true">K</div>
+        <div class="drag-item" draggable="true">L</div>
+    </div>
+    <script>
+        function dragstart_handler(ev) {
+            ev.dataTransfer.setDate("text/plain", ev.target.id)
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            const element = document.getElementById('p1');
+            element.add
+        })
+    </script>
+</body>
+
+</html>

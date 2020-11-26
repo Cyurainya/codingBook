@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+        .flex {
+            display: flex;
+            flex-flow: column;
+            width: 800px;
+            height: 800px;
+        }
+
+        .row {
+            flex-grow: 1;
+            display: flex;
+            margin-bottom: 2px;
+        }
+
+        .row>div {
+            flex-grow: 1;
+            background-color: antiquewhite;
+            margin-right: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid flex">
+        <div class="row">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+        </div>
+        <div class="row">
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+        <div class="row">
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+        </div>
+    </div>
+</body>
+
+</html>

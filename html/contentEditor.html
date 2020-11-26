@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: Helvetica;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" value="Alexey" />
+    <button>Increment</button>
+</body>
+<script>
+    const NODE_DATA_KEY = '__ID_Data__';
+
+    // The current nodes being processed
+    let currentNode = null;
+    let currentParent = null;
+
+    class NodeData {
+        // key
+        // attrs
+
+        constructor(name) {
+            this.name = name;
+            this.text = null;
+        }
+    }
+
+    function getData(node) {
+        if (!node[NODE_DATA_KEY]) {
+            node[NODE_DATA_KEY] = new NodeData(node.nodeName.toLowerCase());
+        }
+        return node[NODE_DATA_KEY];
+    }
+
+    function enterNode() {
+        currentParent = currentNode;
+        currentNode = null;
+    }
+
+    function nextNode() {
+        currentNode = currentNode ? currentNode.nextSibling : currentParent.firstChild;
+    }
+
+    function exitNode() {
+        currentNode = currentParent;
+        currentParent = currentParent.parentNode;
+    }
+
+    const matches = function (matchNode, name) {
+        const data = getData(matchNode);
+        return name === data.name;
+    };
+
+    function renderDOM(name) {
+        if (currentNode && matches(currentNode, name)) {
+            return currentNode;
+        }
+
+        const node = name === '#text' ? document.createTextNode('') : document.createElement(name);
+
+        currentParent.insertBefore(node, currentNode);
+
+        currentNode = node;
+
+        return node;
+    }
+
+    function elementOpen(name) {
+        nextNode();
+        const node = renderDOM(name);
+        enterNode();
+
+        // check for updates, i.t attributes
+        const data = getData(node);
+
+        return currentParent;
+    }
+
+    function elementClose(node) {
+        exitNode();
+
+        return currentNode;
+    }
+
+    function text(value) {
+        nextNode();
+
+        const node = renderDOM('#text');
+
+        // checks for text updates
+        const data = getData(node);
+        if (data.text !== value) {
+            data.text = value;
+            node.data = value;
+        }
+        console.log(value, data);
+        return currentNode;
+    }
+
+    function patch(node, fn, data) {
+        currentNode = node;
+
+        enterNode();
+        fn(data);
+        exitNode();
+    }
+
+    function render(data) {
+        elementOpen('h3');
+        {
+            text('Hello, ' + data.user);
+        }
+        elementClose('h3');
+        elementOpen('p');
+        {
+            text('Counter: ');
+            elementOpen('span');
+            {
+                text(data.counter);
+            }
+            elementClose('span');
+        }
+        elementClose('p');
+        render2(data);
+    }
+
+    function render2(data) {
+        elementOpen('ul');
+        {
+            text('Counter: ');
+            elementOpen('li');
+            {
+                text(data.counter);
+            }
+            elementClose('li');
+            elementOpen('li');
+            {
+                text(data.counter);
+            }
+            elementClose('li');
+        }
+        elementClose('ul');
+    }
+
+    document.querySelector('button').addEventListener('click', () => {
+        data.counter++;
+        patch(document.body, render, data);
+    });
+    document.querySelector('input').addEventListener('input', e => {
+        data.user = e.target.value;
+        patch(document.body, render, data);
+    });
+
+    const data = {
+        user: 'Alexey',
+        counter: 2,
+    };
+
+    patch(document.body, render, data);
+</script>
+
+</html>
