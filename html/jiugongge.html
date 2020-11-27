@@ -7,29 +7,36 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <style>
-        .flex {
+        body {
+            margin: 0px
+        }
+
+        .box {
+            height: 100vh;
+            width: 100vh;
+
             display: flex;
-            flex-flow: column;
-            width: 800px;
-            height: 800px;
+            flex-direction: column;
         }
 
         .row {
+            margin-bottom: 10px;
             flex-grow: 1;
             display: flex;
-            margin-bottom: 2px;
         }
 
         .row>div {
             flex-grow: 1;
-            background-color: antiquewhite;
-            margin-right: 2px;
+            text-align: center;
+            background-color: yellow;
+            margin-right: 10px;
+
         }
     </style>
 </head>
 
 <body>
-    <div class="grid flex">
+    <div class="box">
         <div class="row">
             <div>1</div>
             <div>2</div>

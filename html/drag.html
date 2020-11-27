@@ -6,7 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+        [draggable] {
+            user-select: none;
+        }
 
+        .drag-list {
+            overflow: hidden;
+            width: 500px;
+            border: 1px solid #ccc;
+        }
+
+        .drag-item {
+            float: left;
+            padding: 50px 20px;
+            width: 25%;
+            text-align: center;
+            color: #555;
+            background: #ddd;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            transition: 0.25s;
+        }
+
+        .drag-start {
+            opacity: 0.8;
+        }
+
+        .drag-enter {
+            opacity: 0.5;
+            transform: scale(0.9);
+        }
     </style>
 </head>
 
@@ -27,13 +56,74 @@
         <div class="drag-item" draggable="true">L</div>
     </div>
     <script>
-        function dragstart_handler(ev) {
-            ev.dataTransfer.setDate("text/plain", ev.target.id)
+        class DragNSort {
+            constructor(config) {
+                this.$activeItem = null;
+                this.$container = config.container;
+                this.$items = Array.from(
+                    this.$container.querySelectorAll("." + config.itemClass)
+                );
+                this.dragStartClass = config.dragStartClass;
+                this.dragEnterClass = config.dragEnterClass;
+            }
+            removeClasses() {
+                this.$items.forEach(($item) => {
+                    $item.classList.remove(this.dragStartClass, this.dragEnterClass);
+                });
+            }
+
+            on(elements, eventType, handler) {
+                Array.from(elements).forEach((element) => {
+                    element.addEventListener(eventType, handler.bind(element, this));
+                });
+            }
+
+            onDragStart(_this, event) {
+                _this.$activeItem = this;
+                this.classList.add(_this.dragStartClass);
+                event.dataTransfer.setData("text/html", this.innerHTML);
+            }
+            onDragEnd(_this) {
+                this.classList.remove(_this.dragStartClass);
+            }
+            onDragEnter(_this) {
+                this.classList.add(_this.dragEnterClass);
+            }
+            onDragLeave(_this) {
+                this.classList.remove(_this.dragEnterClass);
+            }
+            onDragOver(_this, event) {
+                if (event.preventDefault) {
+                    event.preventDefault();
+                }
+            }
+            onDrop(_this, event) {
+                if (_this.$activeItem !== this) {
+                    _this.$activeItem.innerHTML = this.innerHTML;
+                    this.innerHTML = event.dataTransfer.getData("text/html");
+                }
+                _this.removeClasses();
+            }
+            bind() {
+                this.on(this.$items, "dragstart", this.onDragStart);
+                this.on(this.$items, "dragend", this.onDragEnd);
+                this.on(this.$items, "dragover", this.onDragOver);
+                this.on(this.$items, "dragenter", this.onDragEnter);
+                this.on(this.$items, "dragleave", this.onDragLeave);
+                this.on(this.$items, "drop", this.onDrop);
+            }
+            init() {
+                this.bind();
+            }
         }
-        window.addEventListener('DOMContentLoaded', () => {
-            const element = document.getElementById('p1');
-            element.add
-        })
+        // Instantiate
+        var draggable = new DragNSort({
+            container: document.querySelector(".drag-list"),
+            itemClass: "drag-item",
+            dragStartClass: "drag-start",
+            dragEnterClass: "drag-enter",
+        });
+        draggable.init();
     </script>
 </body>
 

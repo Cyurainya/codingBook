@@ -1,18 +1,29 @@
-// let fun = 'function(){console.log(123);}';
-// let f1 = new Function('console.log(123)')();
-// let f2 = new Function('return ' + fun)();
-// f2();
+
 
 function path(str, obj) {
-  let strArr = str.split('.');
-  console.log(obj);
-  strArr.forEach((item, index) => {
-    let objItem = JSON.stringify(item);
-    new Function('console.log(' + obj + '.' + objItem + ')');
-  });
-  //console.log(new Function(obj + '.' + str)());
-}
+  const strArr = str.split('.');
+  let newArr =[];
+  for(let i in strArr){
+    let ifHasNum = strArr[i].search(/\d/g)
+    if(ifHasNum == -1){
+      newArr.push(strArr[i])
+    }else{
+       newArr.push(strArr[i].split('[')[0])
+       newArr.push(strArr[i].charAt(ifHasNum))
+    }
+   
+  }
+  let result = obj ;
+  for(let item of newArr){
+    if(result[item] === undefined){
+      console.log('undefiend')
+      return
+    }
+    result = result[item];
+  }
 
+  console.log(result)
+}
 path('foo.bar[0].test', {
   foo: {
     bar: [
@@ -22,12 +33,12 @@ path('foo.bar[0].test', {
     ],
   },
 }); // => 'test'
-// path('foo.bar[1].test', {
-//   foo: {
-//     bar: [
-//       {
-//         test: 'test',
-//       },
-//     ],
-//   },
-// }); // => 'undefined'
+path('foo.bar[1].test', {
+  foo: {
+    bar: [
+      {
+        test: 'test',
+      },
+    ],
+  },
+}); // => 'undefined'

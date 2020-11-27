@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .div {
+            height: 200px;
+            width: 200px;
+            padding: 100px;
+            background-image: url('https://images.nowcoder.com/images/20180811/938343429_1533974691102_41F612E92BCB6F941BC540155716043E?x-oss-process=image/resize,m_mfit,h_100,w_100');
+            border: 3px solid salmon;
+            box-sizing: border-box;
+        }
+
+        p {
+            border: 0.8em darkviolet;
+            border-style: dotted double;
+            margin: 1em 0;
+            padding: 1.4em;
+            background: linear-gradient(60deg, red, yellow, red, yellow, red);
+            font: 900 1.2em sans-serif;
+            text-decoration: underline;
+        }
+
+        .border-box {
+            background-clip: border-box;
+        }
+
+        .padding-box {
+            background-clip: padding-box;
+        }
+
+        .content-box {
+            background-clip: content-box;
+        }
+
+        .text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div"></div>
+    <p class="border-box">The background extends behind the border.</p>
+    <p class="padding-box">
+        The background extends to the inside edge of the border.
+    </p>
+    <p class="content-box">
+        The background extends only to the edge of the content box.
+    </p>
+    <p class="text">The background is clipped to the foreground text.</p>
+</body>
+
+</html>

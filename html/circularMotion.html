@@ -7,41 +7,38 @@
     <title>Document</title>
     <style>
         .container {
-            position: absolute;
-            height: 800px;
-            width: 800px;
-            background: antiquewhite;
-
+            width: 500px;
+            height: 500px;
+            background-color: wheat;
+            position: relative;
         }
 
         .earth {
-            height: 200px;
-            width: 200px;
-            border-radius: 200px;
-            background-color: yellow;
             position: absolute;
-            top: calc(50% - 100px);
-            left: calc(50% - 100px);
+            width: 100px;
+            height: 100px;
+            top: calc(50% - 50px);
+            background-color: rgb(231, 88, 22);
+            left: calc(50% - 50px);
         }
 
         .moon {
             height: 20px;
             width: 20px;
-            border-radius: 20px;
-            background-color: blue;
+            background-color: darkgoldenrod;
             position: absolute;
-            top: calc(50% - 10px);
-            left: calc(50% - 10px);
-            animation: rotate 3s linear infinite;
+            top: 50%;
+            left: 50%;
+            animation: aniAction 3s linear infinite;
         }
 
-        @keyframes rotate {
+        @keyframes aniAction {
             0% {
-                transform: rotate(0deg) translate(300px);
+                transform: rotate(0deg) translate(100px) rotate(0deg);
             }
 
             100% {
-                transform: rotate(360deg) translate(300px);
+                transform: rotate(360deg) translate(100px) rotate(-360deg);
             }
         }
     </style>
