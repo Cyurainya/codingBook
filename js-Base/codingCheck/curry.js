@@ -1,10 +1,12 @@
 function curry(func) {
-  return function curried(...args) {
+  return function curreid(...args) {
+    //arg就是参数
+    //func就是curry里面的func
     if (args.length >= func.length) {
       return func.apply(this, args);
     } else {
-      return function (...args2) {
-        return curried.apply(this, args.concat(args2));
+      return function (...arg2) {
+        return curreid.apply(this, args.concat(...arg2));
       };
     }
   };

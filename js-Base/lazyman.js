@@ -9,6 +9,7 @@ function chain() {
       }
     }
   }, 0);
+  console.log(`chain`);
   const obj = {
     eat: () => {
       list.push({
