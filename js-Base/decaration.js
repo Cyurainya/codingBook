@@ -12,7 +12,6 @@ function cachingDecorator(func, hash) {
     if (cache.has(key)) {
       return cache.get(key);
     }
-
     let result = func.call(this, ...arguments);
     cache.set(key, result);
     return result;

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        .header,
+        .footer {
+            background-color: burlywood;
+            height: 50px;
+            width: 100vw;
+        }
+
+        .middle {
+            display: flex;
+            width: 100vw;
+        }
+
+        .middleLeft,
+        .middleRight {
+            background-color: rgb(89, 204, 224);
+            width: 100px;
+            height: 100px;
+        }
+
+        .middleC {
+            flex-grow: 1;
+            background-color: chartreuse;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div>
+        <div class="header">header</div>
+        <div class="middle">
+            <div class="middleLeft">left</div>
+            <div class="middleC">
+                middle
+            </div>
+            <div class="middleRight">
+                right
+            </div>
+        </div>
+        <div class="footer">footer</div>
+    </div>
+</body>
+
+</html>

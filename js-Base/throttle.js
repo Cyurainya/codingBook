@@ -1,17 +1,20 @@
-function throttle(fn, delay) {
-  let start = +Date.now(); //上一次
+function throttle1(fn, time) {
+  let pre = 0;
+  return function (...args) {
+    if (Date.now() - pre > time) {
+      pre = Date.now();
+      fn.apply(this, args);
+    }
+  };
+}
+
+function throttle2(event, time) {
   let timer = null;
   return function (...args) {
-    const now = +Date.now(); //这次触发
-    if (now - start >= delay) {
-      clearTimeout(timer);
-      timer = null;
-      fn.apply(this, args);
-      start = now;
-    } else {
+    if (!timer) {
       timer = setTimeout(() => {
-        fn.apply(this, args);
-      }, delay);
+        event.apply(this, args);
+      }, time);
     }
   };
 }

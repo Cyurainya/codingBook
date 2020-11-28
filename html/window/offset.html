@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        #box {
+            width: 100px;
+            height: 100px;
+            background-color: greenyellow;
+            top: 30vh;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box"></div>
+    <script>
+        const box = document.getElementById('box');
+        //窗口高度
+        const viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        const offsetTop = box.offsetTop;
+        const scrollTop = document.documentElement.scrollTop;
+        const topHeight = offsetTop - scrollTop
+        console.log(topHeight <= viewPortHeight)
+    </script>
+</body>
+
+</html>

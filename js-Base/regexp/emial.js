@@ -1,0 +1,1 @@
+let pattern = /^([\w\-.])+@(163.com|qq.com|42du.com)$/
