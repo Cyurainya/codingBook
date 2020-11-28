@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="changeUrl()">12121</button>
+    <script>
+        function changeUrl() {
+            let stateObj = {
+                foo: "pin",
+            };
+            history.pushState(stateObj, "page 2", "pin.html");
+        }
+        let _wr = function (type) {
+            let orig = history[type];
+            return function () {
+                let rv = orig.apply(this, arguments);
+                let e = new Event(type);
+                e.arguments = arguments;
+                window.dispatchEvent(e);
+                return rv;
+            };
+        };
+        window.addEventListener("replaceState", function (e) {
+            console.log("THEY DID IT AGAIN! replaceState 111111");
+        });
+        window.addEventListener("pushState", function (e) {
+            console.log("THEY DID IT AGAIN! pushState 2222222");
+        });
+        history.pushState = _wr("pushState");
+        history.replaceState = _wr("replaceState");
+    </script>
+</body>
+
+</html>

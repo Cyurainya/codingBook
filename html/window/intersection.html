@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .ddd {
+            height: 100px;
+            width: 100px;
+            background-color: antiquewhite;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd" id="cc"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd"></div>
+    <div class="ddd" style="background-color: aqua;"></div>
+    <script>
+        let observer = new IntersectionObserver(entries => {
+            if (entries[0].intersectionRatio > 0) {
+                console.log('进入可视区域');
+                // do something
+            }
+        });
+        observer.observe(document.getElementById("cc"));
+        window.addEventListener("scroll", () => {
+            console.log(
+                document.documentElement.scrollTop +
+                document.documentElement.clientWidth,
+                window.screenTop,
+                document.body.scrollHeight
+            );
+        });
+    </script>
+</body>
+
+</html>
