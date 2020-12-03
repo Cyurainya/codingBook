@@ -2,7 +2,6 @@ function selectionSort(arr) {
   //每次找后面最小的数 放到前面
   let len = arr.length;
   let minIndex, temp;
-
   for (let i = 0; i < len - 1; i++) {
     minIndex = i;
     for (let j = i; j < len; j++) {
@@ -10,10 +9,9 @@ function selectionSort(arr) {
         minIndex = j;
       }
     }
-
-    tmp = arr[i];
+    temp = arr[i];
     arr[i] = arr[minIndex];
-    arr[minIndex] = tmp;
+    arr[minIndex] = temp;
   }
   return arr;
 }

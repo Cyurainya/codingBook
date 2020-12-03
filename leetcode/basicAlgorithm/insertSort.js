@@ -10,6 +10,7 @@ function insertSort(arr) {
     }
     arr[preIndex + 1] = current;
   }
+
   return arr;
 }
 
