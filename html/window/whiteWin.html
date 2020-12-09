@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //不兼容performance.timing浏览器
+        window.pageStartTime = Date.now()
+    </script>
+    <link rel="stylesheet" href="xx.css">
+    <link rel="stylesheet" href="zz.css">
+    <script>
+        //白屏结束时间
+        window.firstPaint = Date.now()
+        console.log(firstPaint - performance.timing.navigationStart)
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

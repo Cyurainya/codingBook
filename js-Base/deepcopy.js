@@ -10,6 +10,20 @@ function deepCopy(obj) {
   }
   return res;
 }
+
+function newDeepClone(content) {
+  if (typeof content !== 'object') return;
+  const res = Array.isArray(content) ? [] : {};
+  for (let key in content) {
+    if (typeof content[key] == 'object') {
+      deepClone(content[key]);
+    } else {
+      res[key] = content[key];
+    }
+  }
+  return res;
+}
+
 function deepClone(obj) {
   if (!obj) return null;
   if (obj instanceof RegExp) return new RegExp(obj);
