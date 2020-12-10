@@ -16,3 +16,9 @@ function newFactory(ctor, ...args) {
   let isFunction = typeof res === 'function';
   return isObject || isFunction ? res : obj;
 }
+
+function _new(fn, ...arg) {
+  const obj = Object.create(fn.prototype);
+  const ret = fn.apply(obj, arg);
+  return ret instanceof Object ? ret : obj;
+}
