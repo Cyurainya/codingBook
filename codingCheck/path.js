@@ -1,28 +1,25 @@
-
-
 function path(str, obj) {
   const strArr = str.split('.');
-  let newArr =[];
-  for(let i in strArr){
-    let ifHasNum = strArr[i].search(/\d/g)
-    if(ifHasNum == -1){
-      newArr.push(strArr[i])
-    }else{
-       newArr.push(strArr[i].split('[')[0])
-       newArr.push(strArr[i].charAt(ifHasNum))
+  let resultArr = [];
+  for (let i in strArr) {
+    let ifHasNum = strArr[i].search(/\d/g);
+    if (ifHasNum == -1) {
+      resultArr.push(strArr[i]);
+    } else {
+      resultArr.push(strArr[i].split('[')[0]);
+      resultArr.push(strArr[i].charAt(ifHasNum));
     }
-   
   }
-  let result = obj ;
-  for(let item of newArr){
-    if(result[item] === undefined){
-      console.log('undefiend')
-      return
+  let result = obj;
+  for (let item of resultArr) {
+    if (result[item] === undefined) {
+      console.log('undefiend');
+      return;
     }
     result = result[item];
   }
-
-  console.log(result)
+  console.log(resultArr);
+  console.log(result);
 }
 path('foo.bar[0].test', {
   foo: {
@@ -33,12 +30,12 @@ path('foo.bar[0].test', {
     ],
   },
 }); // => 'test'
-path('foo.bar[1].test', {
-  foo: {
-    bar: [
-      {
-        test: 'test',
-      },
-    ],
-  },
-}); // => 'undefined'
+// path('foo.bar[1].test', {
+//   foo: {
+//     bar: [
+//       {
+//         test: 'test',
+//       },
+//     ],
+//   },
+// }); // => 'undefined'
