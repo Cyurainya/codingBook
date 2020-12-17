@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function sendMessageToSw(msg) {
+            navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage(msg);
+
+        }
+
+        function tryToRegiter() {
+            sendMessageToSw({
+                type: 'register',
+                reportDate: {
+                    url: location.href
+                }
+            })
+        }
+        //页面注册
+        tryToRegiter()
+        //心跳回包
+        navigator.serviceWorker.addEventListener('message', function (event) {
+            if (event.data.type === 'checkHealth') {
+                sendMessageToSw({ type: 'keepHealth' })
+            }
+        })
+        //页面关之前发送退出信息
+        window.addEventListener('beforeunload', function (event) {
+            sendMessageToSw({
+                type: 'unregister',
+            })
+        })
+        // sw 代码
+        const heartDetection = {};
+        const CRASH_TIME = 5000;
+        /**
+         * @param  {Object} client
+         * @param  {Object} msg
+         * 给对应的client发送消息
+         */
+        function sendMessageToClient(client, msg) {
+            client.postMessage(msg);
+        }
+        /**
+         * @param  {String} id
+         * 给根据 id 给主页面发送心跳包并检测是否存活
+         * 下一个心跳包发送的的时候，上一个还没回来，则认为页面卡死
+         */
+        function checkHealth(id) {
+            if (heartDetection[id]) {
+                // 不健康就上报
+                if (heartDetection[id].flag !== 'healthy') {
+                    reportCrash(heartDetection[id].reportData);
+                    removeCheck(id);
+                    return;
+                }
+                // 设置成不健康，下次定时器的时候检查
+                heartDetection[id].flag = 'unhealthy';
+                sendMessageToClient(heartDetection[id].client, { type: 'checkHealth' })
+            }
+        }
+        /**
+         * @param  {String} id
+         * 清理心跳定时器并从map中移除
+         */
+        function removeCheck(id) {
+            if (heartDetection[id]) {
+                heartDetection[id].timer && clearInterval(heartDetection[id].timer);
+                delete heartDetection[id];
+            }
+        }
+        self.addEventListener('message', function (event) {
+            const sourceId = event.source.id;
+            switch (type) {
+                // 页面新来的时候注册
+                case 'register':
+                    // 根据id拿到对应的页面
+                    self.clients.get(sourceId)
+                        .then(function (client) {
+                            heartDetection[sourceId] = {
+                                client: client,
+                                reportData: event.data.reportData,
+                                timer: setInterval(function () {
+                                    checkHealth(sourceId);
+                                }, CRASH_TIME),
+                                flag: 'healthy',
+                            };
+                            client.postMessage({ type: 'registerSuccess' })
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                        })
+                    break;
+                // 页面关闭的时候会删除有关信息
+                case 'unregister':
+                    removeCheck(sourceId);
+                    break;
+                case 'keepHealth':
+                    if (heartDetection[sourceId]) {
+                        heartDetection[sourceId].flag = 'healthy';
+                    }
+            }
+        });
+    </script>
+</body>
+
+</html>

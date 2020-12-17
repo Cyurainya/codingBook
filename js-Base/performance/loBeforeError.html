@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const CRASH_TIME = 5000;
+        window.addEventListener('load', function () {
+            const uniqueKey = generatorKey();
+            localStorage.setItem(uniqueKey, {
+                timeBrforeCrash: +new Date()
+            }, CRASH_TIME)
+        })
+        window.addEventListener('beforeunload', function () {
+            localStorage.removeItem(uniqueKey)
+        })
+
+        //遍历localStorage中存储的数据，如果发现有超过阈值没有更新的数据，则认为该页面卡死
+        for (let key in localStorage.valueOf()) {
+            const item = localStorage.getItem(key);
+            //超过CRASH_TIME没有更新时间，则认为页面卡死
+            if (typeof item === 'boject' && item.timeBrforeCrash && (+new Date() - item.item.timeBrforeCrash > CRASH_TIME)) {
+                localStorage.removeItem(key)
+            }
+        }
+    </script>
+</body>
+
+</html>

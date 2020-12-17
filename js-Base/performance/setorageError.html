@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        window.addEventListener('load', function () {
+            sessionStorage.setItem('good_exit', 'pending')
+            setInterval(function () {
+                sessionStorage.setItem('time_before_crash', new Date().toString())
+            }, 5000)
+        })
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.setItem('good_exit', 'true')
+        })
+        if (sessionStorage.getItem('good_exit') &&
+            sessionStorage.getItem('good_exit') !== 'true') {
+            /* 卡死了  */
+            alert('crashed on: ' + sessionStorage.getItem('time_before_crash'));
+        }
+    </script>
+</body>
+
+</html>
