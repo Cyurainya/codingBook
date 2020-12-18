@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            margin-bottom: 40px;
+        }
+
+        .scale ::after {
+            display: block;
+            content: '';
+            border-bottom: 1px solid #000;
+            transform: scaleY(.5);
+        }
+
+        .linear ::after {
+            display: block;
+            content: '';
+            height: 1px;
+            background: linear-gradient(0, #fff, #000);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scale"></div>
+    <div class="linear"></div>
+</body>
+
+</html>
