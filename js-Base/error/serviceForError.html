@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Service Worker 有自己独立的工作线程，与网页区分开，网页崩溃了，Service Worker 一般情况下不会崩溃；
+    Service Worker 生命周期一般要比网页还要长，可以用来监控网页的状态；
+    网页可以通过 navigator.serviceWorker.controller.postMessage API 向掌管自己的 SW 发送消息。 -->
+
+    <!-- 1.网络加载后，通过postMessage API每5s给sw发送一个心跳，表示自己的在线，sw将在线的网络登记下来，更新登记时间
+
+    2.网页在beforeunload的时候，通过postMessage API告知自己已经正常关闭，sw将登记的网页清除
+
+    3.如果网页在运行的过程中crash了，sw的running状态将不会被清除，更新时间停留在奔溃前的最后一次心跳
+
+    4.Service Worker每10s查看一遍登记中的网页，发现登记时间已经超出了一定时间，既可以判定网页crash了 -->
+
+
+    <script>
+        const CHECK_CRASH_INTERVAL = 10 * 1000;
+        const CRASH_THRESHOLD = 15 * 1000;
+        const pages = {}
+        let timer
+        function checkCrash() {
+            const now = Date.now();
+            for (let id in pages) {
+                let page = pages[id];
+                if ((now - page.t) > CRASH_THRESHOLD) {
+                    //上报crash
+                    delete pages[id]
+                }
+            }
+            if (Object.key(pages).length == 0) {
+                clearInterval(timer)
+                timer = null
+            }
+        }
+
+        worker.addEventListener('message', (e) => {
+            const data = e.data;
+            if (data.type === 'heartbeat') {
+                pages[data.id] = {
+                    t: Date.now()
+                }
+                if (!timer) {
+                    timer = setInterval(function () {
+                        checkCrash()
+                    }, CHECK_CRASH_INTERVAL)
+                }
+            } else if (data.type === 'unload') {
+                delete pages[data.id]
+            }
+        })
+        if (navigator.serviceWorker.controller !== null) {
+            let HEARTBEAT_INTERVAL = 5 * 1000;
+            let sessionId = uuid();
+            let heartbeat = function () {
+                navifator.serviceWorker.controller.postMessage({
+                    type: 'heartbeat',
+                    id: sessionId,
+                    data: {}
+                })
+            }
+            window.addEventListener('beforeunload', function () {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'unload',
+                    id: sessionId
+                })
+            })
+            setInterval(heartbeat, HEARTBEAT_INTERVAL);
+            heartbeat()
+        }
+    </script>
+</body>
+
+
+</html>
