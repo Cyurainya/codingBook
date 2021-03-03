@@ -1,11 +1,7 @@
-class A {
-  constructor(name) {
-    this.name = name;
-  }
-  getF() {
-    console.log(this);
-  }
+let obj = {};
+function changeValue(obj) {
+  obj.name = 'ConardLi';
+  obj = { name: 'code秘密花园' };
 }
-const a = new A();
-const funcA = a.getF.bind(A);
-funcA();
+changeValue(obj);
+console.log(obj);

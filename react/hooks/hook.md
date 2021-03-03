@@ -70,6 +70,24 @@ function useEffect(callback, depArray) {
 }
 ```
 
+## 使用 hook 的动机
+
+1. 减少状态太逻辑复用
+
+   mixin 的状态逻辑就是可以相互覆盖的，hook 就不会
+
+2. 避免地狱式嵌套
+   hoc 的地狱式嵌套会非常深
+
+3. 让组件更容易理解
+
+他们拥有自己的各种状态，然后将组件分割成更小的各种更小的函数
+
+4. 使用函数代替 class
+
+class 比函数好用
+
 ### 参考文章
 
 [React hook 原理](https://github.com/brickspert/blog/issues/26)
+[react about hoc 等组件服用](https://juejin.cn/post/6844903815762673671#heading-33)
