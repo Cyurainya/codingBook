@@ -16,7 +16,7 @@ Fiber 有自己的组件调用栈，以`链表`的形式遍历组件树，可以
 
 ### react 内部运转分三层
 
-1. Vitual DOM 层，描述页面张什么样
+1. Vitual DOM 层，描述页面长什么样
 2. Reconciler 层，负责调用组件生命周期方法、Diff 运算等（Fiber）
 3. Renderer 层，根据不同的平台，渲染出相应的页面，比较常见的是 reactDOM 和 ReactNative
 
