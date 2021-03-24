@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alert标签</title>
+</head>
+
+<body>
+    <p>asdd</p>
+    <h1>h1h1h1h1</h1>
+    <h2>h2h2h2h2h2</h2>
+
+    <script>
+        // 直接实现
+        document.onclick = function (e) {
+            let e = e || window.event;//处理兼容，获取事件的对象
+            let o = e["target"] || e["srcElement"];//处理兼容，获取事件目标
+            alert(o.tagName.toLowerCase());
+        }
+
+        // 优雅实现
+        function elementName(evt) {
+            evt = evt || window.event;
+            var selected = evt.target || evt.srcElement;
+            var eleName =
+                selected && selected.tagName
+                    ? selected.tagName.toLowerCase()
+                    : "no tagName";
+            alert(eleName);
+        }
+
+        window.onload = function () {
+            var el = document.getElementsByTagName("body");
+            el[0].onclick = elementName;
+        };
+    </script>
+</body>
+
+</html>
