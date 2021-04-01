@@ -64,7 +64,7 @@ function Index() {
 分析原因：
 
 1. 在`setState`中的结果很简单，由于`state`是 _Immutable_ 的，setState 后一定会生成一个 _全新的 state 引用_
-2.
+2. 所以在`Component`
 
 ### 组件初始化：
 
