@@ -9,29 +9,29 @@
 ```javascript
 var LogMixin = {
   log: function () {
-    console.log('log');
+    console.log('log')
   },
   componentDidMount: function () {
-    console.log('in');
+    console.log('in')
   },
   componentWillUnmount: function () {
-    console.log('out');
+    console.log('out')
   },
-};
+}
 
 var User = React.createClass({
   mixins: [LogMixin],
   render: function () {
-    return <div>...</div>;
+    return <div>...</div>
   },
-});
+})
 
 var Goods = React.createClass({
   mixins: [LogMixin],
   render: function () {
-    return <div>...</div>;
+    return <div>...</div>
   },
-});
+})
 ```
 
 ### Mixin 的危害
@@ -50,15 +50,13 @@ var Goods = React.createClass({
 function visible(WrappedComponent) {
   return class extends Component {
     render() {
-      const { visible, ...props } = this.props;
-      if (visible === false) return null;
-      return <WrappedComponent {...props} />;
+      const { visible, ...props } = this.props
+      if (visible === false) return null
+      return <WrappedComponent {...props} />
     }
-  };
+  }
 }
 ```
-
-、
 
 ![hoc](./hoc.png)
 
@@ -68,9 +66,9 @@ function visible(WrappedComponent) {
 function proxyHOC(WrappedComponent) {
   return class extends Component {
     render() {
-      return <WrappedComponent {...this.props} />;
+      return <WrappedComponent {...this.props} />
     }
-  };
+  }
 }
 ```
 
