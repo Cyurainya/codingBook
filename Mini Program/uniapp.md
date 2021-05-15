@@ -40,6 +40,7 @@ uniapp 遵循 vuejs 语法规范，vuejs 是单文件、三段式结构。而小
 因为小程序在视图层与逻辑层两个线程间提供了数据传输和事件系统的功能
 
 **好处**：环境隔离，即保证了安全性，同时也是一种性能提升的手段，就算你业务逻辑计算非常繁忙也不会阻塞交互
+
 **坏处**：两个各负其责，跨线程通信成本极高
 
 - ①② 用户拖动，视图层触发 touchmove 事件，经 native 层中转通知逻辑层
@@ -89,5 +90,10 @@ Vue.js 负责数据管理， 小程序负责页面渲染， 因此我们可以�
 
 1. [跨端开发框架深度横评之 2020 版](https://zhuanlan.zhihu.com/p/127915625)
 2. [小程序全面测评](https://jelly.jd.com/article/6006b1055b6c6a01506c8818)
+<<<<<<< HEAD
 3. [uniapp 高性能](https://www.yuque.com/zaotalk/posts/vab0md)
 4. [谜之 WXS](https://zhuanlan.zhihu.com/p/82741561)
+=======
+3. [uniapp高性能](https://www.yuque.com/zaotalk/posts/vab0md)
+4. [谜之WXS](https://zhuanlan.zhihu.com/p/82741561)
+>>>>>>> b85bbe27f2ad54779c18a381df10bc7c3dfe326f
