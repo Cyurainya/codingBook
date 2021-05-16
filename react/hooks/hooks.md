@@ -87,8 +87,28 @@ function useEffect(callback, depArray) {
 
 class 比函数好用
 
+## 闭包陷阱
+
+我们知道 hooks 的原理是有闭包的，memoizedState 数组是按 hook 定义的顺序来放置数据的，如果 hook 顺序变化，memoizedState 并不会感知到，所以 react 是通过判断以来是否有改变，改变了才会执行回调函数，我们来看下面的代码
+
+```javascript
+function App() {
+  const [count, setCount] = useState(1);
+  useEffect(() => {
+    setInterval(() => {
+      console.log(count);
+    }, 1000);
+  }, []);
+  function click() {
+    setCount(2);
+  }
+}
+```
+
+现在有这样一个场景：组件第一次渲染执行 `App()`，执行 `useState` 设置了初始状态为 `1`，所以此时的 `count` 为 1。然后执行了 `useEffect`，回调函数执行，设置了一个定时器每隔 `1s` 打印一次 `count`。接着，当我们再次调用`click()`的时候，就会触发 react 的更新，这个时候也是执行 App(),那`useState`就会将`Hook`对象上保存的状态为`2`。但是由于在执行 useEffect 由于依赖数组是一个空的数组，所以此时回调并不会被执行。在整个过程中，定时器一直执行，且设置`count`为 1，这个闭包就被一直保存着了。
+
 ### 参考文章
 
 [React hook 原理](https://github.com/brickspert/blog/issues/26)
 [react about hoc 等组件服用](https://juejin.cn/post/6844903815762673671#heading-33)
-[轻松掌握React Hooks底层原理](https://segmentfault.com/a/1190000038768433)
+[轻松掌握 React Hooks 底层原理](https://segmentfault.com/a/1190000038768433)
