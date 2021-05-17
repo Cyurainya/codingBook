@@ -14,7 +14,92 @@ Fiber 有自己的组件调用栈，以`链表`的形式遍历组件树，可以
 
 首先 React 会默认有许多微小任务，也就是 fiber 节点
 
-在执行调度工作和计算工作循环时，执行每一个工作中的 Fiber。但是，有一个条件是每隔 5 毫秒，会跳出工作循环，运行一次**异步的`MessageChannel`的`port.postMesage()`方法，检查是否存在事件响应、更高优先级任务及其他代码需要执行** 。如果有则执行，如果没有则重新创建工作循环，执行剩下的工作中的 Fiber。 但是，由于检查也会费一点时间，所以 5 毫秒有时候不会精准。
+在执行调度工作和计算工作循环时，执行每一个工作中的 Fiber。但是，有一个条件是每隔 5 毫秒，会跳出工作循环，运行一次**异步的`MessageChannel`的`port.postMesage()`方法，检查是否存在事件响应、更高优先级任务及其他代码需要执行** 。如果有则执行，如果没有则`重新创建工作循环`，执行剩下的工作中的 Fiber。 但是，由于检查也会费一点时间，所以 5 毫秒有时候不会精准。
+
+本质来说，**使用 MessageChannel 的目的就是为了产生宏任务**
+
+```javascript
+const channel = new MessageChannel();
+const port = chanel.port2;
+
+//每次port.postMassage调用就会添加一个宏任务
+// 该宏任务为调用schedule.scheduleTask方法
+channel.port1.onmessage = scheduler.scheduleTask;
+
+const scheduler = {
+  scheduleTask() {
+    //挑选一个任务并执行
+    const task = pickTask();
+    const continuousTask = task();
+
+    //如果当前任务未完成，则在下个宏任务继续执行
+    if (continuousTask) {
+      port.postMessage(null);
+    }
+  },
+};
+```
+
+## 为什么不用 requestAnimationFrame 了
+
+我们知道 rAF() 是在页面更新之前被调用。
+
+如果第一次任务调度不是由 rAF() 触发的，例如直接执行 scheduler.scheduleTask()，那么在本次页面更新前会执行一次 rAF() 回调，该回调就是第二次任务调度。所以使用 rAF() 实现会导致在本次页面更新前执行了两次任务。
+
+为什么是两次，而不是三次、四次？
+
+因为在 rAF() 的回调中再次调用 rAF()，会将第二次 rAF() 的回调放到下一帧前执行，而不是在当前帧前执行。
+另一个原因是 rAF() 的触发间隔时间不确定，如果浏览器间隔了 10ms 才更新页面，那么这 10ms 就浪费了。
+
+## React 和 Schedule 交互
+
+1. React 组件状态更新，向 schedule 中存入一个任务，该任务为 React 更新算法
+2. Schedule 调度该任务，执行 React 更新算法
+3. React 在调和阶段更新一个 Fiber 之后，会询问 Schedule 是否需要暂停。如果不需要暂停，就重复步骤 3，继续更新下一个 Fiber
+4. 如果 Schedule 表示需要暂停，则 React 将返回一个函数，which 用于告诉喊出 Schedule 任务还没完成，sChedule 将在未来某时刻调度任务。
+
+伪代码如下
+
+```javascript
+const scheduler = {
+  pushTask() {
+    // 1. 存入任务
+  },
+
+  scheduleTask() {
+    // 2. 挑选一个任务并执行
+    const task = pickTask();
+    const hasMoreTask = task();
+
+    if (hasMoreTask) {
+      // 4. 未来继续调度
+    }
+  },
+
+  shouldYield() {
+    // 3. 由调用方调用，调用方判断是否需要暂停
+  },
+};
+
+// 当用户点击时修改了组件状态，则伪代码如下
+const handleClick = () => {
+  // React 组件更新时，产生任务
+  const task = () => {
+    const fiber = root;
+    while (!scheduler.shouldYield() && fiber) {
+      // reconciliation() 对当前的 fiber 执行调和阶段
+      // 并返回下一个 fiber
+      fiber = reconciliation(fiber);
+    }
+  };
+
+  scheduler.pushTask(task);
+
+  // React 会在将来某个时间执行 scheduler.scheduleTask()
+  // 这里假设立即执行 scheduler.scheduleTask()
+  scheduler.scheduleTask();
+};
+```
 
 ## 中断什么 怎么中断
 
@@ -33,21 +118,21 @@ Fiber 有自己的组件调用栈，以`链表`的形式遍历组件树，可以
 function task(deadline) {
   while (true) {
     if (!deadline.timeRemaining()) {
-      requestIdleCallback(task)
-      break
+      requestIdleCallback(task);
+      break;
     }
   }
 }
-requestIdleCallback(task)
+requestIdleCallback(task);
 ```
 
 以下是`React fiber`主动释放的代码
 
 ```javascript
 function workloop(hasTimeRemaining, initialTime) {
-  let currentTime = initialTime
-  advanceTimers(currentTime)
-  currentTask = peek(taskQueue)
+  let currentTime = initialTime;
+  advanceTimers(currentTime);
+  currentTask = peek(taskQueue);
   while (
     currentTask !== null &&
     !(enableSchedulerDebugger && isSchedulerPaused)
@@ -57,7 +142,7 @@ function workloop(hasTimeRemaining, initialTime) {
       (!hasTimeRemaining || shouldYieldToHost())
     ) {
       //超时的话就主动退出循环，将控制权交还浏览器
-      break
+      break;
     }
   }
 }
@@ -108,3 +193,4 @@ function workloop(hasTimeRemaining, initialTime) {
 参考文档：
 
 1. [彻底搞懂 react 调度](https://terry-su.github.io/cn/undestand-react-scheduling-mechanism-from-source-code-concurrent-mode/)
+2. [react Schedule](https://juejin.cn/post/6953804914715803678)
