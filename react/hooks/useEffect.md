@@ -4,6 +4,24 @@
 
 告诉 React 组件需要在渲染之后执行某些操作。react 会保存你传递的函数（effect），并且在执行 DOM 更新之后调用他
 
+### 源码实现
+
+```javascript
+let _deps; // _deps 记录 useEffect 上一次的 依赖
+
+function useEffect(callback, depArray) {
+  const hasNoDeps = !depArray; // 如果 dependencies 不存在
+  const hasChangedDeps = _deps
+    ? !depArray.every((el, i) => el === _deps[i]) // 两次的 dependencies 是否完全相等
+    : true;
+  /* 如果 dependencies 不存在，或者 dependencies 有变化*/
+  if (hasNoDeps || hasChangedDeps) {
+    callback();
+    _deps = depArray;
+  }
+}
+```
+
 ### 主要功能
 
 `输入`:依赖项和创建函数
