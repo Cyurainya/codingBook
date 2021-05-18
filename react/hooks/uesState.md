@@ -66,6 +66,21 @@ function Index() {
 1. 在`class`状态中，通过一个实例化`class`去*维护组件中的各种状态*
 2. 在`function`组件中，没有一个状态去保存这些信息，每一次去函数上下文执行，所有变量，常量都重新声明。执行完毕，在被垃圾回收机制回收。所以无论`setTimeout`执行多少次，都是在当前函数上下文执行，此时的`num = 0` 不会编，之后`setNumber` 执行，函数组件重新执行之后，`num` 才变化。
 
+### 实现
+
+```javascript
+var _state; // 把 state 存储在外面
+
+function useState(initialValue) {
+  _state = _state || initialValue; // 如果没有 _state，说明是第一次执行，把 initialValue 复制给它
+  function setState(newState) {
+    _state = newState;
+    render();
+  }
+  return [_state, setState];
+}
+```
+
 ### 组件初始化：
 
 1. 若初始状态为函数，则将函数执行结果设为当前状态。否则将初始状态设为当前状态
