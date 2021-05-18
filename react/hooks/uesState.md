@@ -86,6 +86,6 @@ function Index() {
 
 参考文档：
 
-1. http://www.ptbird.cn/react-hook-usestate-setState.html、
+1. [React Hook useState 与 this.setState 细节使用和差异](http://www.ptbird.cn/react-hook-usestate-setState.html) 
 
-2. https://mp.weixin.qq.com/s/xZHonNggvB3Faif4EEY8mQ
+2. [「react进阶」一文吃透react-hooks原理](https://mp.weixin.qq.com/s/xZHonNggvB3Faif4EEY8mQ)
